@@ -1,3 +1,9 @@
+"""
+Name: Thy Nguyen
+Since: 06-2021
+"""
+
+
 class Operations:
     """
     Common Operations between Stack and Queue
@@ -78,7 +84,7 @@ class Queue(Operations):
     """
 
     def enqueue(self, item):
-        """ Add `item`"""
+        """ Add item """
         if item is not None:
             self.items += [item]
             self.counts += 1
