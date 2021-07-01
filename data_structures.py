@@ -1,6 +1,6 @@
 """
 Name: Thy Nguyen
-Since: 06-2021
+Project: Customized Posters Ordering System
 """
 
 
