@@ -4,6 +4,56 @@ Project: Customized Posters Ordering System
 """
 
 
+class HashMap:
+    """
+    For user management
+    """
+
+    def __init__(self, size):
+        """ Initialize hash map """
+        self.hash_map = [[] for i in range(size)]
+
+    def size(self):
+        """ How many cells inside hash table"""
+        return len(self.hash_map)
+
+    def put(self, key, value):
+        """ Add new key-value pair, or update value of the old key
+        Key is item unique id, Value is item (e.g. User) instance """
+        hash_id = hash(key) % self.size()
+        bucket = self.hash_map[hash_id]
+        if (key, value) in bucket:
+            for i in range(len(bucket)):
+                if bucket[i][0] == key:
+                    bucket[i] = (key, value)  # update
+                    break
+        else:
+            bucket.append((key, value))  # add new key-value
+
+    def get_value(self, key):
+        """ Get item (e.g. User) instance whose id is the given key """
+        hash_id = hash(key) % self.size()
+        bucket = self.hash_map[hash_id]
+        key_lst = [k[0] for k in bucket]
+        if key in key_lst:
+            for i in range(len(bucket)):
+                if bucket[i][0] == key:
+                    return bucket[i][1]
+        else:
+            return None
+
+    def delete_value(self, key):
+        """ Delete item (e.g. User) """
+        hash_id = hash(key) % self.size()
+        bucket = self.hash_map[hash_id]
+        key_lst = [k[0] for k in bucket]
+        if key in key_lst:
+            for i in range(len(bucket)):
+                if bucket[i][0] == key:
+                    bucket.pop(i)
+                    break
+
+
 class Operations:
     """
     Common Operations between Stack and Queue
@@ -106,7 +156,7 @@ class Queue(Operations):
         """ Dequeue multiple items """
         for i in range(nums):
             self.dequeue()
-            
+
     def peek(self):
         """ Peek front item """
         if not self.empty():
