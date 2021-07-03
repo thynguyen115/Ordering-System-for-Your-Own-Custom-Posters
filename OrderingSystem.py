@@ -4,7 +4,7 @@ Project: Customized Posters Ordering System
 """
 
 
-from data_structures import Stack, Queue
+from data_structures import HashMap, Stack, Queue
 from customize_poster import ImageGrid, ImageProcessing, \
     ImageReader, ImageClassification
 from datetime import datetime
@@ -118,11 +118,21 @@ class PurchaseHistory:
 #######################################################################
 #                                USER                                 #
 #######################################################################
+class UserManagement:
+    """A class to manage each type of user """
+
+    def __init__(self):
+        """ Initialize 3 types of user hash tables """
+        self.size = 50
+        self.std_user = HashMap(self.size)
+        self.pre_user = HashMap(self.size)
+        self.guest_user = HashMap(self.size)
+        self.total_users = 0
+        
+        
 class User:
-    """ A class that provides abstraction to the users.
-    The User instance is similar to a membership card. Each User
-    instance can only register with 1 store. Initializing Users under
-    this class will create "ordinary" users.
+    """
+    User class separate Standard User, Premium User, and Guest
     """
     user_id = 0
 
@@ -139,8 +149,41 @@ class User:
         self.email = email
         self.address = address
         self.balance = balance
+        self.premium = False # standard user
         self.id = User.user_id
         User.user_id += 1
         self.shopping_record = Stack()
         self.basket = Queue()
         self.store = store
+   
+        def __str__(self):
+        """ A string representation of user """
+        return "{} has a balance of {}$".\
+            format(self.name, self.balance)
+
+    def __repr__(self):
+        """ Repr representation """
+        return "USER <{}> @ <{}>".format(self.name, self.store.name)
+
+    def update_user_info(self, new_name, new_email, new_address):
+        """ Change user info """
+        self.name = new_name
+        self.email = new_email
+        self.address = new_address
+
+    def display_info(self):
+        """ Get user info """
+        return "User: " + self.name + "\nEmail: " + self.email \
+               + "\nAddress: " + self.address
+
+    def set_balance(self, new_balance):
+        """ Set user balance """
+        self.balance = new_balance
+
+    def get_balance(self):
+        """ Get user balance """
+        return self.balance
+
+    def update_balance(self, amount):
+        """ Update balance by the amount; amount < 0 when purchasing """
+        self.balance += amount
