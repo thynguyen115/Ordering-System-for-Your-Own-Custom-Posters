@@ -120,17 +120,35 @@ class PurchaseHistory:
 #######################################################################
 class UserManagement:
     """A class to manage each type of user """
-
-    def __init__(self):
+    user_list = []
+    
+    def __init__(self, max_size):
         """ Initialize 3 types of user hash tables """
-        self.size = 50
-        self.std_user = HashMap(self.size)
-        self.pre_user = HashMap(self.size)
-        self.guest_user = HashMap(self.size)
-        self.total_users = 0
+        self.capacity = len(max_size)
+        self.std_user = HashMap(self.capacity)
+        self.pre_user = HashMap(self.capacity)
+        self.guest_user = HashMap(self.capacity)
+    
+    def add_all_users(self):
+        """ Add all new user """
+        for user in user_list:
+            if isinstance(user, User):
+                self.std_user.put(user.user_id, user)
+            elif isinstance(user, PremiumUser):
+                self.pre_user.put(user.user_id, user)
+            else:
+                self.guest_user.put(user.user_id, user)
+    
+    def total_users(self):
+        """ Report the number of users """
+        return len(user_list)
+    
+    def renew_membership(self, old_membership, new_membership):
+        """ Renew user membership """
+        # to be added
         
         
-class User:
+class User(UserManagement):
     """
     User class separate Standard User, Premium User, and Guest
     """
@@ -149,12 +167,13 @@ class User:
         self.email = email
         self.address = address
         self.balance = balance
-        self.premium = False # standard user
+        self.premium = False  # standard user
         self.id = User.user_id
-        User.user_id += 1
+        User.user_id += 1  # auto increment user_id
         self.shopping_record = Stack()
         self.basket = Queue()
         self.store = store
+        UserManagement.user_list.append(self)  # keep track of all users
    
         def __str__(self):
         """ A string representation of user """
